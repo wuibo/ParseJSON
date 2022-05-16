@@ -17,6 +17,7 @@ unsigned short read_json(struct object *object, char *json, unsigned int size) {
   short state = s_start;
   struct object *json_root;
   struct object *json_temp;
+  struct object *json_back;
   struct object *temp_object;
   unsigned int *object_count;
   unsigned int point;
@@ -551,8 +552,8 @@ unsigned short read_json(struct object *object, char *json, unsigned int size) {
           point++;
         }
         //avanzar hasta detectar si , o :
-        point++;
         while(json[point]!=','&&json[point]==':'){
+          point++;
           //solo wite space o lo esperado
           switch(json[point]){
             case ' ':
@@ -568,13 +569,23 @@ unsigned short read_json(struct object *object, char *json, unsigned int size) {
               break;
             case ',':
               //es parte del array guardar valor
+              json_back = temp_object->content;
+              json_temp = malloc((object_count[stack_level]+1)*sizeof(struct object));
+              for(i=0;i<stack_level;i++){
+                json_temp[i] = json_back[i];
+              }
+              json_temp[stack_level].content = temp_char;
+              json_temp[stack_level].type = json_type_string;
+              json_temp[stack_level].size = 1;
+              stack_level++;
+              temp_object->content = json_temp;
+              free(json_back);
               break;
             default:
               //error
               return -1;
               break;
           }
-          point++;
         }
         break;
       }
@@ -595,7 +606,7 @@ struct object *get_last_object(struct object *root, unsigned int *object_count, 
   int i;
   struct object *act_object=root;
   for(i=0;i<stack_level;i++){
-    act_object = act_object[object_count[i]].content;
+    act_object = &act_object[object_count[i]];
   }
   return act_object;
 }
