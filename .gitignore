@@ -1,0 +1,14 @@
+*.log
+*.json
+main.c
+*.breakpoints
+**/.cls-cache
+.ccls-cache/
+.replit
+replit.nix
+Makefile
+*.d
+*.o
+main
+main.d
+main.o

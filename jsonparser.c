@@ -42,13 +42,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
   object_count[0] = 0;
   json_root = malloc(sizeof *json_root);
 
-  printf("tamaño: %u\n", size);
   for (point = 0; point < size; point++) {
-    printf("estado: %u, point: %u, char: %c\n", state, point, json[point]);
-    fflush(stdout);
-    printf("stack_level: %u, count: %u\n", stack_level,
-           object_count[stack_level]);
-    fflush(stdout);
     if (end == 1) {
       break;
     }
@@ -93,8 +87,6 @@ int read_json(struct object *object, char *json, unsigned int size) {
         if (i == 0) {
           return -1;
         } else {
-          printf("punto: %s\n",temp_char);
-          fflush(stdout);
           point = i;
           json_back = json_root;
           json_root =
@@ -352,8 +344,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
           return -1;
         }
         point = i;
-        json_temp =
-            malloc((object_count[stack_level] + 1) * sizeof *json_temp);
+        json_temp = malloc((object_count[stack_level] + 1) * sizeof *json_temp);
         if (object_count[stack_level] > 0) {
           json_back = temp_object->content;
           for (i = 0; i < object_count[stack_level]; i++) {
@@ -434,7 +425,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
              json[point + 3] == 'S' && json[point + 4] == 'E')) {
           temp_object = get_last_object(json_root, object_count, stack_level);
           json_temp =
-              malloc((object_count[stack_level] + 1) * sizeof*json_temp);
+              malloc((object_count[stack_level] + 1) * sizeof *json_temp);
           if (object_count[stack_level] > 0) {
             json_back = temp_object->content;
             for (i = 0; i < object_count[stack_level]; i++) {
@@ -562,8 +553,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
         // array
         state = s_array;
         temp_object = get_last_object(json_root, object_count, stack_level);
-        json_temp =
-            malloc((object_count[stack_level] + 1) * sizeof *json_temp);
+        json_temp = malloc((object_count[stack_level] + 1) * sizeof *json_temp);
         if (object_count[stack_level] > 0) {
           json_back = temp_object->content;
           for (i = 0; i < object_count[stack_level]; i++) {
@@ -587,8 +577,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
         // objeto
         state = s_object_name;
         temp_object = get_last_object(json_root, object_count, stack_level);
-        json_temp =
-            malloc((object_count[stack_level] + 1) * sizeof *json_temp);
+        json_temp = malloc((object_count[stack_level] + 1) * sizeof *json_temp);
         if (object_count[stack_level] > 0) {
           json_back = temp_object->content;
           for (i = 0; i < object_count[stack_level]; i++) {
@@ -660,7 +649,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
         if (stack_level == 0) {
           state = s_next;
         } else {
-          temp_object = get_last_object(json_root,object_count,stack_level);
+          temp_object = get_last_object(json_root, object_count, stack_level);
           switch (temp_object->type) {
           case json_type_object:
             state = s_object_next;
@@ -698,7 +687,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
         break;
       case '}':
         // fin del objeto
-        if(object_count[stack_level]>0){
+        if (object_count[stack_level] > 0) {
           return -1;
         }
         temp_object = get_last_object(json_root, object_count, stack_level);
@@ -707,7 +696,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
         if (stack_level == 0) {
           state = s_next;
         } else {
-          temp_object = get_last_object(json_root,object_count,stack_level);
+          temp_object = get_last_object(json_root, object_count, stack_level);
           switch (temp_object->type) {
           case json_type_object:
             state = s_object_next;
@@ -726,8 +715,6 @@ int read_json(struct object *object, char *json, unsigned int size) {
         if (i == 0) {
           return -1;
         } else {
-          printf("\tpunto: %s",temp_char);
-          fflush(stdout);
           temp_object = get_last_object(json_root, object_count, stack_level);
           point = i;
           json_back = temp_object->content;
@@ -794,9 +781,9 @@ int read_json(struct object *object, char *json, unsigned int size) {
           json_temp = temp_object->content;
           temp_int = malloc(sizeof *temp_int);
           temp_int[0] = 1;
-          json_temp[object_count[stack_level]-1].content = temp_int;
-          json_temp[object_count[stack_level]-1].type = json_type_boolean;
-          json_temp[object_count[stack_level]-1].size = 1;
+          json_temp[object_count[stack_level] - 1].content = temp_int;
+          json_temp[object_count[stack_level] - 1].type = json_type_boolean;
+          json_temp[object_count[stack_level] - 1].size = 1;
           point += 3;
           state = s_object_next;
         } else {
@@ -815,9 +802,9 @@ int read_json(struct object *object, char *json, unsigned int size) {
           json_temp = temp_object->content;
           temp_int = malloc(sizeof *temp_int);
           temp_int[0] = 1;
-          json_temp[object_count[stack_level]-1].content = temp_int;
-          json_temp[object_count[stack_level]-1].type = json_type_boolean;
-          json_temp[object_count[stack_level]-1].size = 1;
+          json_temp[object_count[stack_level] - 1].content = temp_int;
+          json_temp[object_count[stack_level] - 1].type = json_type_boolean;
+          json_temp[object_count[stack_level] - 1].size = 1;
           point += 3;
           state = s_object_next;
         } else {
@@ -836,9 +823,9 @@ int read_json(struct object *object, char *json, unsigned int size) {
           json_temp = temp_object->content;
           temp_int = malloc(sizeof *temp_int);
           temp_int[0] = 0;
-          json_temp[object_count[stack_level]-1].content = temp_int;
-          json_temp[object_count[stack_level]-1].type = json_type_boolean;
-          json_temp[object_count[stack_level]-1].size = 1;
+          json_temp[object_count[stack_level] - 1].content = temp_int;
+          json_temp[object_count[stack_level] - 1].type = json_type_boolean;
+          json_temp[object_count[stack_level] - 1].size = 1;
           point += 4;
           state = s_object_next;
         } else {
@@ -857,9 +844,9 @@ int read_json(struct object *object, char *json, unsigned int size) {
           json_temp = temp_object->content;
           temp_int = malloc(sizeof *temp_int);
           temp_int[0] = 0;
-          json_temp[object_count[stack_level]-1].content = temp_int;
-          json_temp[object_count[stack_level]-1].type = json_type_boolean;
-          json_temp[object_count[stack_level]-1].size = 1;
+          json_temp[object_count[stack_level] - 1].content = temp_int;
+          json_temp[object_count[stack_level] - 1].type = json_type_boolean;
+          json_temp[object_count[stack_level] - 1].size = 1;
           point += 4;
           state = s_object_next;
         } else {
@@ -876,8 +863,8 @@ int read_json(struct object *object, char *json, unsigned int size) {
           // correcto
           temp_object = get_last_object(json_root, object_count, stack_level);
           json_temp = temp_object->content;
-          json_temp[object_count[stack_level]-1].type = json_type_null;
-          json_temp[object_count[stack_level]-1].size = 1;
+          json_temp[object_count[stack_level] - 1].type = json_type_null;
+          json_temp[object_count[stack_level] - 1].size = 1;
           point += 3;
           state = s_object_next;
         } else {
@@ -894,9 +881,10 @@ int read_json(struct object *object, char *json, unsigned int size) {
           // correcto
           temp_object = get_last_object(json_root, object_count, stack_level);
           json_temp = temp_object->content;
-          json_temp[object_count[stack_level]-1].type = json_type_null;
-          json_temp[object_count[stack_level]-1].size = 1;
-          point += 3;;
+          json_temp[object_count[stack_level] - 1].type = json_type_null;
+          json_temp[object_count[stack_level] - 1].size = 1;
+          point += 3;
+          ;
           state = s_object_next;
         } else {
           // erroneo
@@ -908,9 +896,9 @@ int read_json(struct object *object, char *json, unsigned int size) {
         state = s_array;
         temp_object = get_last_object(json_root, object_count, stack_level);
         json_temp = temp_object->content;
-        json_temp[object_count[stack_level]-1].type = json_type_array;
+        json_temp[object_count[stack_level] - 1].type = json_type_array;
         stack_level++;
-        object_back = malloc((stack_level + 1) * sizeof * object_back);
+        object_back = malloc((stack_level + 1) * sizeof *object_back);
         for (i = 0; i < stack_level; i++) {
           object_back[i] = object_count[i];
         }
@@ -923,7 +911,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
         state = s_object_name;
         temp_object = get_last_object(json_root, object_count, stack_level);
         json_temp = temp_object->content;
-        json_temp[object_count[stack_level]-1].type = json_type_object;
+        json_temp[object_count[stack_level] - 1].type = json_type_object;
         stack_level++;
         object_back = malloc((stack_level + 1) * sizeof *object_back);
         for (i = 0; i < stack_level; i++) {
@@ -942,9 +930,9 @@ int read_json(struct object *object, char *json, unsigned int size) {
           point = i;
           temp_object = get_last_object(json_root, object_count, stack_level);
           json_temp = temp_object->content;
-          json_temp[object_count[stack_level]-1].type = json_type_string;
-          json_temp[object_count[stack_level]-1].size = char_size;
-          json_temp[object_count[stack_level]-1].content = temp_char;
+          json_temp[object_count[stack_level] - 1].type = json_type_string;
+          json_temp[object_count[stack_level] - 1].size = char_size;
+          json_temp[object_count[stack_level] - 1].content = temp_char;
           state = s_object_next;
         }
         break;
@@ -958,9 +946,9 @@ int read_json(struct object *object, char *json, unsigned int size) {
           point = i;
           temp_object = get_last_object(json_root, object_count, stack_level);
           json_temp = temp_object->content;
-          json_temp[object_count[stack_level]-1].type = json_type_number;
-          json_temp[object_count[stack_level]-1].size = 1;
-          json_temp[object_count[stack_level]-1].content = temp_num;
+          json_temp[object_count[stack_level] - 1].type = json_type_number;
+          json_temp[object_count[stack_level] - 1].size = 1;
+          json_temp[object_count[stack_level] - 1].content = temp_num;
           state = s_object_next;
         }
         break;
@@ -1018,13 +1006,8 @@ struct object *get_last_object(struct object *root, unsigned int *object_count,
   int i;
   struct object *act_object = root;
   for (i = 0; i < (stack_level - 1); i++) {
-    act_object = act_object[object_count[i]-1].content;
+    act_object = act_object[object_count[i] - 1].content;
   }
-  printf("\t\tGet_last_object: stack: %u el objeto %u\n", stack_level - 1,
-         object_count[stack_level - 1] - 1);
-  printf("\t\tpoint: %p\n", &act_object[object_count[stack_level - 1] - 1]);
-  printf("\t\ttipo: %u\n", act_object[object_count[stack_level - 1] - 1].type);
-  fflush(stdout);
   return &act_object[object_count[stack_level - 1] - 1];
 }
 
@@ -1171,6 +1154,7 @@ unsigned int get_number(char *json, unsigned int point, double *val,
     // No se ha terminado correctamente
     return 0;
   }
+  errno = 0;
   val[0] = strtod(temp_char, &eptr);
   free(temp_char);
   /* If the result is 0, test for an error */
@@ -1280,4 +1264,50 @@ unsigned int get_string(char *json, unsigned int point, char **val,
   val[0] = temp_char;
   *s_sice = size;
   return point;
+}
+
+int json_get_item_by_name(struct object root, char *name) {
+  int i;
+  struct object *json_temp = root.content;
+  for (i = 0; i < root.size; i++) {
+    if (strcmp(json_temp[i].name, name) == 0) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+unsigned short json_get_item_type(struct object root) { return root.type; }
+
+int json_get_string(struct object root, char **str) {
+  char *temp;
+  if (root.type != json_type_string) {
+    return -1;
+  }
+  if (root.size > 0) {
+    *str = malloc(root.size * sizeof *temp);
+    temp = root.content;
+    strcpy(str,temp);
+  }
+  return root.size;
+}
+
+double json_get_number(struct object root){
+  double *temp;
+  if(root.type != json_type_number || root.size != 1){
+    errno = ERANGE;
+    return 0;
+  }
+  errno = 0;
+  temp = root.content;
+  return *temp;  
+}
+
+short json_get_boolean(struct object root){
+  char * temp;
+  if(root.type != json_type_boolean || root.size != 1){
+    return -1;
+  }
+  temp = root.content;
+  return (short)*temp;
 }

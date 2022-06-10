@@ -9,9 +9,11 @@ int main(void) {
   char *buffer;
   struct object *json_root = malloc(sizeof *json_root);
   struct object *temp_json;
-  int i;
+  int i,id;
+  double *doub;
+  int pnum;
 
-  fp = fopen("prueba.json", "rb");
+  fp = fopen("example3.json", "rb");
   if (!fp)
     perror("blah.txt"), exit(1);
 
@@ -37,6 +39,18 @@ int main(void) {
     temp_json = json_root->content;
     printf("Tamaño: %d\n", json_root->size);
     //printf("Name %s\n",temp_json[2].name);
+
+    //numero
+    if((id=json_get_item_by_name(*json_root,"player_count"))<0){
+      printf("Player num no encontrado\n");
+      fflush(stdout);
+    }else{
+      doub = temp_json[id].content;
+      pnum = (int) *doub;
+      printf("Número: %lf, %d\n",*doub,pnum);
+      fflush(stdout);
+    }
+    
   }
 
   fclose(fp);
