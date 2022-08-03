@@ -95,6 +95,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
             json_root[i] = json_back[i];
           }
           json_root[object_count[stack_level]].name = temp_char;
+          json_root[object_count[stack_level]].name_size = char_size;
           object_count[stack_level]++;
           free(json_back);
           state = s_nameend;
@@ -728,6 +729,7 @@ int read_json(struct object *object, char *json, unsigned int size) {
             free(json_back);
           }
           json_temp[object_count[stack_level]].name = temp_char;
+          json_temp[object_count[stack_level]].name_size = char_size;
           temp_object->content = json_temp;
           object_count[stack_level]++;
           state = s_object_nameend;
@@ -1270,7 +1272,7 @@ int json_get_item_by_name(struct object root, char *name) {
   int i;
   struct object *json_temp = root.content;
   for (i = 0; i < root.size; i++) {
-    if (strcmp(json_temp[i].name, name) == 0) {
+    if (strncmp(json_temp[i].name, name,json_temp[i].name_size) == 0 && strlen(name) == json_temp[i].name_size) {
       return i;
     }
   }
@@ -1287,7 +1289,7 @@ int json_get_string(struct object root, char **str) {
   if (root.size > 0) {
     *str = malloc(root.size * sizeof *temp);
     temp = root.content;
-    strcpy(str,temp);
+    strcpy(*str,temp);
   }
   return root.size;
 }

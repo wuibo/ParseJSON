@@ -9,6 +9,7 @@
 struct object {
   unsigned short type;
   unsigned int size;
+  unsigned int name_size;
   char * name;
   void * content;
 };
